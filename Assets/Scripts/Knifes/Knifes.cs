@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Knifes : MonoBehaviour
 {
-    private List<Knife> _knifes;
+    private List<Knife> _knifesInWood;
 
     public static Knifes Instance;
     private void Awake()
@@ -12,19 +12,19 @@ public class Knifes : MonoBehaviour
             Instance = this;
     }
     private void Start()
-    {        
-        _knifes = new List<Knife>();
+    {
+        _knifesInWood = new List<Knife>();
     }
 
-    public int CountKnifesInWood { get { return _knifes.Count; } }
+    public int CountKnifesInWood { get { return _knifesInWood.Count; } }
 
-    public void AddKnife(Knife knife) => _knifes.Add(knife);   
+    public void AddKnife(Knife knife) => _knifesInWood.Add(knife);   
 
-    public void DeleteAllKnife() => _knifes.Clear();
+    public void DeleteAllKnife() => _knifesInWood.Clear();
 
     public void GetNewParent()
     {
-        foreach (var knife in _knifes)
+        foreach (var knife in _knifesInWood)
         {
             knife.Transform.parent = null;
         }
@@ -32,7 +32,7 @@ public class Knifes : MonoBehaviour
 
     public void DisactivateCollider()
     {
-        foreach (var knife in _knifes)
+        foreach (var knife in _knifesInWood)
         {
             knife.BoxCollider.enabled = false;
         }
@@ -40,11 +40,11 @@ public class Knifes : MonoBehaviour
 
     public void AddGravity()
     {
-        foreach (var knife in _knifes)
+        foreach (var knife in _knifesInWood)
         {
             knife.RigidbodyKnife.isKinematic = false;
             knife.RigidbodyKnife.AddForce(new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), ForceMode2D.Impulse);
-            knife.Transform.Rotate(0f, 0f, Random.Range(-5f, 5f));
+            knife.Transform.Rotate(0f, 0f, Random.Range(-15f, 15f));
             knife.RigidbodyKnife.gravityScale = 3;
         }     
     }

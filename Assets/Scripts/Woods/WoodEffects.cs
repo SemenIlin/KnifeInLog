@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+
+[RequireComponent(typeof(SpriteRenderer))]
 public class WoodEffects : MonoBehaviour
 {
     [SerializeField] private Material _woodMaterialBlink;
@@ -11,14 +13,16 @@ public class WoodEffects : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private void Start()
     {
+        // Start shot only when created wood.
+        WoodManager.IsStartToknifeThrower = true;
+
         _oldPosition = transform.position;
         _newPosition = new Vector3(_oldPosition.x, _oldPosition.y + offset, _oldPosition.z);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _woodMaterial = _spriteRenderer.material;
-        Knife.HitOnWood += ShowHit;
     }    
 
-    private void ShowHit()
+    public void ShowHit()
     {
         transform.position = _newPosition;
         _spriteRenderer.material = _woodMaterialBlink;        

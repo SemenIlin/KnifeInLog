@@ -8,6 +8,10 @@ TagManager:
   - Knife
   - Blade
   - Apple
+  - DestroyBorder
+  - PartWood
+  - PartApple
+  - KnifeInWood
   layers:
   - Default
   - TransparentFX

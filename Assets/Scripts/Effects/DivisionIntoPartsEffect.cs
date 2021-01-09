@@ -16,10 +16,10 @@ public class DivisionIntoPartsEffect : MonoBehaviour
         {
             var tempPart = part.GetComponent<Rigidbody2D>();
             tempPart.AddForce(new Vector2(Random.Range(_force.x, _force.y), Random.Range(_force.x, _force.y)), ForceMode2D.Impulse);
-            tempPart.gravityScale = 1;
+            tempPart.gravityScale = 4;
         }
     }
-    public void GetNewParentForWoodParts()
+    public void GetNewParent()
     {
         foreach (var part in _parts)
         {

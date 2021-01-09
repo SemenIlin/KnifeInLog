@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5a16665113e5e74f96a27f3fc3fd517, type: 3}
-  m_Name: WoodSettings
+  m_Name: WoodLevel2
   m_EditorClassIdentifier: 
   _woodConfig:
-    Prefab: {fileID: 1743363060797648446, guid: eb4be273349034d46bf10e72d4551c25, type: 3}
-    Speed: -6.826704
-    Firmness: 6
-    ChangeCreateApple: 25
-    TimerForChangeDirection: 3
+    Prefab: {fileID: 4740017149512889977, guid: 353a7b8edd0423a4db35559f8bb0fa5a, type: 3}
+    Speed: 3
+    Firmness: 4
+    ChangeCreateApple: 100
+    TimerForChangeDirection: 7.7
+    TimeForStopWood: 1.62
+    TimerForCreateKnife: 0.2

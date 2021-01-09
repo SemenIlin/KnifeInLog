@@ -22,14 +22,20 @@ public class Settings : ScriptableObject
 
         [Range(3f, 20f)]
         public float TimerForChangeDirection = 5f;
+
+        [Range(0.5f, 5f)]
+        public float TimeForStopWood = 2f;
+
+        [Range(0.2f, 10f)]
+        public float TimerForCreateKnife = 1f;
     }
 
     [SerializeField]
     private WoodConfig _woodConfig;
 
-    public WoodModel Get()
+    public WoodModel Get(Transform parrentTransform)
     {
-        wood = Instantiate(_woodConfig.Prefab);
+        wood = Instantiate(_woodConfig.Prefab, parrentTransform);
 
         wood.Initialize(_woodConfig.Speed,
                         _woodConfig.Firmness,
@@ -39,15 +45,14 @@ public class Settings : ScriptableObject
         return wood;
     }
 
+    public float ChangeCreateApple { get { return _woodConfig.ChangeCreateApple; } }
+    public float GetTimeForStopWood { get { return _woodConfig.TimeForStopWood; } }
+    public int GetFirmness { get { return _woodConfig.Firmness; } }
+    
+    public float TimerForCreateKnife { get { return _woodConfig.TimerForCreateKnife; } }
+
     public void UpdateValues()
     {
-        _woodConfig.Speed = wood.Speed;
-
-        if (wood.Speed != _woodConfig.Speed ||
-            wood.TimerForChangeDirection != _woodConfig.TimerForChangeDirection ||
-            wood.Firmness != _woodConfig.Firmness ||
-            wood.ChangeCreateApple != _woodConfig.ChangeCreateApple)
-
         wood.Initialize(_woodConfig.Speed,
                         _woodConfig.Firmness,
                         _woodConfig.ChangeCreateApple,
