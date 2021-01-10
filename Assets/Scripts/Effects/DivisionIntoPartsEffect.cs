@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 public class DivisionIntoPartsEffect : MonoBehaviour
 {
     [SerializeField] private GameObject[] _parts;

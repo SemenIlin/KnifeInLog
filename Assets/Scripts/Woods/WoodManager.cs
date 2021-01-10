@@ -6,7 +6,6 @@ public class WoodManager : MonoBehaviour
     private Settings _settings;
     private DivisionIntoPartsEffect _divisionIntoPartsEffect;
     private WoodModel _woodModel;
-    private WoodEffects _woodEffect;
     private GameObject _wood;
     private Transform _woodTransform;
 
@@ -19,42 +18,74 @@ public class WoodManager : MonoBehaviour
     private float _currentSpeed;
     private int _period = 2;
 
-    public static bool IsStartToknifeThrower { get; set; } = false;
     public const float TIMER_FOR_CREATE_NEW_WOOD = 1f;
+    /// <summary>
+    /// Create knife if wood is exist.
+    /// </summary>
+    public static bool IsCreatedWood { get; private set; }
 
+    /// <summary>
+    /// Create knife with wood when player go to next level.
+    /// </summary>
+    public static event Action CreateKnife;
     public static event Action FailApple;
     public static event Action UpdateCanvas;
     private void Start()
     {
-        Knife.ChangeWood += ChangeWood;
-        InitWood();
+        ButtonManager.Instance.CreateEnviromentLevel += InitWood;
+        ButtonManager.Instance.DestroyWood += DestroyWood;
     }
     private void Update()
     {
+        if (_settings == null)
+            return;
+
         _settings.UpdateValues();
 
         _time += Time.deltaTime;
         if (_time >= _woodModel.TimerForChangeDirection)
         {
             RotateWithTimer();
-        }        
-    }
+        }
+
+        if (_woodModel.Firmness <= Knifes.Instance.CountKnifesInWood &&
+            GameManager.IsGame)
+            ChangeWood();
+
+     }
     private void FixedUpdate()
     {
         if (_woodTransform == null)
             return;
 
-        _woodTransform.Rotate(0f, 0f, _currentSpeed);
+        if(GameManager.IsGame)
+            _woodTransform.Rotate(0f, 0f, _currentSpeed);
     }
 
+    public void ChangeWood()
+    {
+        DestroyOnPartWood();
+        Invoke("InitWood", TIMER_FOR_CREATE_NEW_WOOD);
+        Invoke("CreateKnifeMethod", TIMER_FOR_CREATE_NEW_WOOD);
+    }
+
+    public void ResetWood()
+    {
+        DestroyWood();
+        Invoke("InitWood", TIMER_FOR_CREATE_NEW_WOOD);
+    }
+
+    private void CreateKnifeMethod()
+    {
+        CreateKnife?.Invoke();
+    }
     private void InitWood()
     {
+        IsCreatedWood = true;
+        TextController.Instance.ShowLevel();
         _settings = LevelController.Instance.GetLevel(GameManager.Level);
         _woodModel = _settings.Get(transform);
         _wood = _woodModel.gameObject;
-        _woodEffect = _wood.GetComponent<WoodEffects>();
-        Knife.HitOnWood += _woodEffect.ShowHit;
-
         _divisionIntoPartsEffect = _wood.GetComponent<DivisionIntoPartsEffect>();
 
         _divisionIntoPartsEffect.DisableParts();
@@ -63,17 +94,14 @@ public class WoodManager : MonoBehaviour
 
         UpdateCanvas?.Invoke();
     }
-    public void ChangeWood()
+    private void DestroyOnPartWood()
     {
-        if (_woodModel.Firmness <= Knifes.Instance.CountKnifesInWood &&
-        GameManager.IsGame)
-        {
-            DestroyWood();
-            Invoke("InitWood", TIMER_FOR_CREATE_NEW_WOOD);
-        }
-     }
-    private void DestroyWood()
-    {    
+        KnifeThrower.IsStartToknifeThrower = false;
+        IsCreatedWood = false;
+           ++GameManager.Level;
+        GameManager.MaxLevel = GameManager.MaxLevel > GameManager.Level ?
+            GameManager.MaxLevel :
+            GameManager.Level;
         SoundEffects.Instance.WoodCrackling();
 
         FailApple?.Invoke();
@@ -81,17 +109,21 @@ public class WoodManager : MonoBehaviour
         Knifes.Instance.GetNewParent();
         Knifes.Instance.AddGravity();
         Knifes.Instance.DeleteAllKnife();
-        Knife.HitOnWood -= _woodEffect.ShowHit;
 
         _divisionIntoPartsEffect.GetNewParent();
         _divisionIntoPartsEffect.EnableSpriteRendererForParts();
         _divisionIntoPartsEffect.AddForceGravicyParts();
-        Destroy(_wood);
-        ++GameManager.Level;
 
-        IsStartToknifeThrower = false;    
+        Destroy(_wood.gameObject);
     }
+    private void DestroyWood()
+    {
+        KnifeThrower.IsStartToknifeThrower = false;
+        IsCreatedWood = false;
+        Knifes.Instance.DeleteAllKnife();
 
+        Destroy(_wood.gameObject);
+    }
     private void RotateWithTimer()
     {        
         _oldSpeed = _woodModel.Speed;

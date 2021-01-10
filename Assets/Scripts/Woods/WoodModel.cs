@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
-
 public class WoodModel : MonoBehaviour
 {
+    private void Start()
+    {
+        Knife.HideWood += Hide;
+        ButtonManager.Instance.ShoowWood += Show;
+    }
     public float Speed { get; set; }
     public int Firmness { get; private set; }
     public float ChangeCreateApple { get; private set; }
@@ -12,5 +16,20 @@ public class WoodModel : MonoBehaviour
         Firmness = firmness;
         ChangeCreateApple = changeCreateApple;
         TimerForChangeDirection = timerForChangeDirection;
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        Knife.HideWood -= Hide;
+        ButtonManager.Instance.ShoowWood -= Show;
     }
 }

@@ -1,34 +1,34 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
 
     private string filePath;
 
-    private void Start()
+    private void Awake()
     {
+        Vibration.Init();
         if (Instance == null)
         {
             Instance = this;
         }
         filePath = Application.persistentDataPath + "data.gamesave";
 
-        SaveGame();
         LoadGame();
+        SaveGame();
     }
 
     public void SaveGame()
     {
-
         using (var fs = new FileStream(filePath, FileMode.Create))
         {
             var bf = new BinaryFormatter();
             var save = new Save();
             save.QuantityApple = GameManager.QuantityApple;
-            save.Score = GameManager.Score;
+            save.MaxScore = GameManager.MaxScore;
+            save.MaxLevel = GameManager.MaxLevel;
 
             bf.Serialize(fs, save);
         }
@@ -47,7 +47,8 @@ public class SaveManager : MonoBehaviour
             var save = (Save)bf.Deserialize(fs);
 
             GameManager.QuantityApple = save.QuantityApple;
-            GameManager.Score = save.Score;
+            GameManager.MaxScore = save.MaxScore;
+            GameManager.MaxLevel = save.MaxLevel;
         }
     }
 
@@ -55,6 +56,7 @@ public class SaveManager : MonoBehaviour
     public class Save
     {
         public int QuantityApple;
-        public int Score;
+        public int MaxScore;
+        public int MaxLevel;
     }
 }

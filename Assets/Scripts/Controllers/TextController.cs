@@ -14,10 +14,16 @@ public class TextController : MonoBehaviour
     [SerializeField] private Text _levelMenuWindow;
 
     public static TextController Instance;
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
             Instance = this;
+    }
+
+    private void Start()
+    {
+        WoodManager.UpdateCanvas += ShowScore;
+        WoodManager.UpdateCanvas += ShowQuantityApple;
     }
     public void ShowQuantityApple()
     {
@@ -34,16 +40,16 @@ public class TextController : MonoBehaviour
 
     public void ShowLevel()
     {
-        _levelGameWindow.text = GameManager.Level.ToString();
+        _levelGameWindow.text = (GameManager.Level + 1).ToString();
     }
 
     public void ShowMaxScore()
     {
-        _scoreMenuWindow.text = 1.ToString();
+        _scoreMenuWindow.text = GameManager.MaxScore.ToString();
     }
 
     public void ShowMaxLevel() 
     {
-        _levelMenuWindow.text = 1.ToString();
+        _levelMenuWindow.text = (GameManager.MaxLevel + 1).ToString();
     }
 }

@@ -8,7 +8,7 @@ public class KnifeIcon : MonoBehaviour
     private Sprite _defaultSprite;
 
     private Image _image;
-    private void Start()
+    private void OnEnable()
     {
         _image = GetComponent<Image>();
         _defaultSprite = _image.sprite;

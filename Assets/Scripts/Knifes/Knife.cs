@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,16 +12,18 @@ public class Knife : MonoBehaviour
 
     private CircleCollider2D _woodCollider2D;
 
+    public bool IsKnifeInWood { get; private set; }
     public BoxCollider2D BoxCollider { get; private set; }
     public Rigidbody2D RigidbodyKnife { get; private set; }
     public Transform Transform { get; private set; }
-    public bool IsAttacedToWood { get; private set; } = false;
-    public static event Action HitOnWood;
-    public static event Action ChangeWood; 
 
-    private void Start()
+    public static event Action HitOnWood;
+
+    public static event Action HideWood;
+
+    
+    private void OnEnable()
     {
-        Vibration.Init();
         RigidbodyKnife = GetComponent<Rigidbody2D>();
         BoxCollider = GetComponent<BoxCollider2D>();
         Transform = GetComponent<Transform>();
@@ -28,11 +31,11 @@ public class Knife : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isFail && !IsAttacedToWood)
-            transform.Rotate(0f, 0f, _rotate);
-
-        if (transform.position.y < -10)
+        if (transform.position.y < -1000)
             Destroy(this.gameObject);
+
+        if (_isFail)
+           transform.Rotate(0f, 0f, _rotate);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,15 +43,24 @@ public class Knife : MonoBehaviour
         var col = collision.gameObject;
         if (col.tag == "Wood")
         {
+            IsKnifeInWood = true;
+
             if (_woodCollider2D == null)
                 _woodCollider2D = col.GetComponent<CircleCollider2D>();
 
             Knifes.Instance.AddKnife(this);
+
+            // Change position wood, light effect, fail parts.
+            HitOnWood?.Invoke();
+
             ++GameManager.Score;
+            GameManager.MaxScore = GameManager.MaxScore > GameManager.Score ?
+                GameManager.MaxScore : 
+                GameManager.Score;
+
             SaveManager.Instance.SaveGame();
             TextController.Instance.ShowScore();
 
-            ChangeWood?.Invoke();
             // Stick in knife.
             RigidbodyKnife.velocity = Vector2.zero;
             RigidbodyKnife.isKinematic = true;
@@ -56,39 +68,47 @@ public class Knife : MonoBehaviour
             // New parent, allows to rotate knife with wood.
             transform.parent = collision.transform;
             transform.position = NewPositionKnife(col.transform);
-            IsAttacedToWood = true;
-            
-            // Change position wood, light effect, fail parts.
-            HitOnWood?.Invoke();
 
-            // spawn new knife when old knife in wood.
-            KnifeThrower.IsShot = true;
+            KnifeThrower.IsStartToknifeThrower = true;
 
-            Vibration.VibratePeek();
             SoundEffects.Instance.ShootWood();
-        }
-
-        if (col.tag == "Knife" && col.GetComponent<Knife>().IsAttacedToWood ||
-            col.tag == "KnifeInWood")
-        {
-            Vibration.VibratePop();
-            SoundEffects.Instance.ShootKnife();
-            _isFail = true;
-            GameManager.IsGame = false;
-
-            // do not re-tap knife to wood or knife.
-            BoxCollider.enabled = false;
-
-            // Rotate and fail knife after lose shoot.
-            RigidbodyKnife.velocity = Vector2.one;
-            RigidbodyKnife.gravityScale = 3;            
-        }
+            Vibration.Vibrate(100);
+        }        
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var col = collision.gameObject;
+        // If shoot to knife in wood or default knife and current knife don't in wood.  
+        if ((col.tag == "Knife" && col.GetComponent<Knife>().IsKnifeInWood ||
+            col.tag == "KnifeInWood") && !IsKnifeInWood)
+        {
+            Vibration.VibratePeek();
+            SoundEffects.Instance.ShootKnife();
+            GameManager.IsGame = false;
+            _isFail = true;
+
+            // Rotate and fail knife after lose shoot.
+            RigidbodyKnife.velocity = Vector2.down;
+            RigidbodyKnife.gravityScale = 3;
+
+            GameManager.Score = 0;
+            GameManager.Level = 0;
+
+            StartCoroutine(ShowResultWindow());
+        }
+    }
     private Vector3 NewPositionKnife(Transform parrentTransform)
     {
         var newPosition = parrentTransform.position;
-        newPosition.y -= _woodCollider2D.radius;
+        newPosition.y -= _woodCollider2D.radius + 0.1f;
         return newPosition;
+    }
+
+    private IEnumerator ShowResultWindow() 
+    {
+        yield return new WaitForSeconds(1f);
+        HideWood?.Invoke();
+        ButtonManager.Instance.ShowWindow(3); 
     }
 }

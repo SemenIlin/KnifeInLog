@@ -15,8 +15,8 @@ MonoBehaviour:
   _woodConfig:
     Prefab: {fileID: 4740017149512889977, guid: 353a7b8edd0423a4db35559f8bb0fa5a, type: 3}
     Speed: 3
-    Firmness: 4
-    ChangeCreateApple: 100
+    Firmness: 6
+    ChangeCreateApple: 25
     TimerForChangeDirection: 7.7
     TimeForStopWood: 1.62
     TimerForCreateKnife: 0.2

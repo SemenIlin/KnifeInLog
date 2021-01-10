@@ -9,8 +9,7 @@ public class Apple : MonoBehaviour
     private DivisionIntoPartsEffect _divisionIntoPartsEffect;
     private void Start()
     {
-        var _changeCreateApple = Random.Range(0, 101);
-        Debug.Log(_changeCreateApple);
+        var _changeCreateApple = Random.Range(1, 101);
         if (_settings.ChangeCreateApple < _changeCreateApple)
             gameObject.SetActive(false);
 
@@ -21,6 +20,12 @@ public class Apple : MonoBehaviour
         _divisionIntoPartsEffect = GetComponent<DivisionIntoPartsEffect>();
         _divisionIntoPartsEffect.DisableParts();
     }
+
+    private void OnDisable()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Knife")
@@ -37,7 +42,6 @@ public class Apple : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     private void DeleteParent()
     {
         if (gameObject != null)

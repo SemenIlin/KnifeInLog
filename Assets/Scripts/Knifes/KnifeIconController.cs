@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class KnifeIconController : MonoBehaviour
@@ -26,6 +25,7 @@ public class KnifeIconController : MonoBehaviour
             Destroy(knifeIcon);
 
         _knifeObjects.Clear();
+        _knifeIcons.Clear();
 
         Init();
     }

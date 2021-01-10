@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SoundEffects : MonoBehaviour
 {
-    [SerializeField] private AudioSource _audioSourcesKnife;
-    [SerializeField] private AudioSource _audioSourcesWood;
-    [SerializeField] private AudioSource _audioSourcesWoodCrackling;
-    [SerializeField] private AudioSource _audioSourcesAppleCut;
+    [SerializeField] private AudioClip _knifeToWood;
+    [SerializeField] private AudioClip _knifeToKnife; 
+    [SerializeField] private AudioClip _woodCrackling;
+    [SerializeField] private AudioClip _appleCut;
 
-    private AudioClip _knifeToWood;
-    private AudioClip _knifeToKnife; 
-    private AudioClip _woodCrackling;
-    private AudioClip _appleCut;
+    private AudioSource _audioSource;
 
     public static SoundEffects Instance;
     private void Awake()
@@ -18,18 +16,17 @@ public class SoundEffects : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
+
     private void Start()
     {
-        _knifeToKnife = _audioSourcesKnife.clip;
-        _knifeToWood = _audioSourcesWood.clip;
-        _woodCrackling = _audioSourcesWoodCrackling.clip;
-        _appleCut = _audioSourcesAppleCut.clip;
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    public void ShootWood() => _audioSourcesWood.PlayOneShot(_knifeToWood);
+    public void ShootWood() => _audioSource.PlayOneShot(_knifeToWood);
 
-    public void ShootKnife() => _audioSourcesKnife.PlayOneShot(_knifeToKnife);
+    public void ShootKnife() => _audioSource.PlayOneShot(_knifeToKnife);
 
-    public void WoodCrackling() => _audioSourcesWoodCrackling.PlayOneShot(_woodCrackling);
-    public void AppleCut() => _audioSourcesAppleCut.PlayOneShot(_appleCut);
+    public void WoodCrackling() => _audioSource.PlayOneShot(_woodCrackling);
+
+    public void AppleCut() => _audioSource.PlayOneShot(_appleCut);
 }

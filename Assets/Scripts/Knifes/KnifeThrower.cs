@@ -10,41 +10,52 @@ public class KnifeThrower : MonoBehaviour
     public float force;
     public GameObject knifePrefab;
 
+    public static bool IsCreateKnife = false;
+
     // Change visual knife icon.
     public static event Action Shoot;
-    public static bool IsShot { get; set; } = true;
+
+    /// <summary>
+    ///   Spawn new knife when old knife in wood.
+    /// </summary>
+    public static bool IsStartToknifeThrower { get; set; } = false;
     private void Start()
     {
+        ButtonManager.Instance.CreateEnviromentLevel += CreateKnife;
+        WoodManager.CreateKnife += CreateKnife;
         _settings = LevelController.Instance.GetLevel(GameManager.Level);
-        _knifeGameObject = Instantiate(knifePrefab, transform); 
         _timer = _settings.TimerForCreateKnife;
     }
 
     private void Update()
     {
-        _timer += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0) && _timer >= _settings.TimerForCreateKnife)
+        if (GameManager.IsGame)
         {
-            if (_knifeGameObject == null)
-                return;
+            _timer += Time.deltaTime;
 
-            _knifeGameObject.transform.parent = null;
-            _knifeGameObject.GetComponent<Knife>().RigidbodyKnife.AddForce(Vector2.up * force, ForceMode2D.Impulse);
-            _knifeGameObject = null;
-            _timer = 0;
-            // Change knife icon.
-            Shoot?.Invoke();
-        }
+            if (IsCreateKnife &&
+                _knifeGameObject != null)
+            {
+                _knifeGameObject.GetComponent<Knife>().RigidbodyKnife.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+                _knifeGameObject.transform.parent = null;
+                _knifeGameObject = null;
+                _timer = 0;
+                // Change knife icon.
+                Shoot?.Invoke();
+                IsCreateKnife = false;
+            }
 
 
-        if (WoodManager.IsStartToknifeThrower &&
-            _timer >= _settings.TimerForCreateKnife && 
-            _knifeGameObject == null &&
-            IsShot)
-        {
-            CreateKnife();
-            IsShot = false;
-        }
+            if (_timer >= _settings.TimerForCreateKnife &&
+                IsStartToknifeThrower &&
+                WoodManager.IsCreatedWood &&
+                _knifeGameObject == null)
+            {
+                CreateKnife(); 
+                IsStartToknifeThrower = false;
+            }
+        }    
     }
 
     private void CreateKnife() => _knifeGameObject = Instantiate(knifePrefab, transform);

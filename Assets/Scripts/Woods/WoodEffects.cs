@@ -13,13 +13,12 @@ public class WoodEffects : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private void Start()
     {
-        // Start shot only when created wood.
-        WoodManager.IsStartToknifeThrower = true;
-
         _oldPosition = transform.position;
         _newPosition = new Vector3(_oldPosition.x, _oldPosition.y + offset, _oldPosition.z);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _woodMaterial = _spriteRenderer.material;
+
+        Knife.HitOnWood += ShowHit;
     }    
 
     public void ShowHit()
@@ -34,7 +33,11 @@ public class WoodEffects : MonoBehaviour
         ResetMaterial();
         ResetPosition();
     }
-
     public void ResetMaterial() => _spriteRenderer.material = _woodMaterial;
-    public void ResetPosition() => transform.position = _oldPosition;   
+    public void ResetPosition() => transform.position = _oldPosition;
+
+    private void OnDestroy()
+    {
+        Knife.HitOnWood -= ShowHit;
+    }
 }
