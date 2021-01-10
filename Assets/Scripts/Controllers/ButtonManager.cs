@@ -42,6 +42,7 @@ public class ButtonManager : MonoBehaviour
 
     public void BackHome()
     {
+        DestroyWood?.Invoke();
         TextController.Instance.ShowMaxLevel();
         TextController.Instance.ShowMaxScore();
     }
