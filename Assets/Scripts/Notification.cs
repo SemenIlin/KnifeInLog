@@ -27,7 +27,7 @@ public class Notification : MonoBehaviour
         notification.Title = "Go to play!";
         notification.Text = "New levels waiting you!!!";
         notification.SmallIcon = "icon_0";
-        notification.FireTime = System.DateTime.Now.AddSeconds(30);
+        notification.FireTime = System.DateTime.Now.AddHours(8);
 
         AndroidNotificationCenter.SendNotification(notification, "notif1");
     }
