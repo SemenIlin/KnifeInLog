@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class WoodEffects : MonoBehaviour
+public class BlinkEffects : MonoBehaviour
 {
     [SerializeField] private Material _woodMaterialBlink;
     private Material _woodMaterial;

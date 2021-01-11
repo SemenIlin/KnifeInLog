@@ -18,7 +18,6 @@ public class Apple : MonoBehaviour
         _rigidbody.isKinematic = true;
         WoodManager.FailApple += DeleteParent;
         _divisionIntoPartsEffect = GetComponent<DivisionIntoPartsEffect>();
-        _divisionIntoPartsEffect.DisableParts();
     }
 
     private void OnDisable()
@@ -36,9 +35,7 @@ public class Apple : MonoBehaviour
             SoundEffects.Instance.AppleCut();
 
             // Division aplle on parts.
-            _divisionIntoPartsEffect.GetNewParent();
-            _divisionIntoPartsEffect.EnableSpriteRendererForParts();
-            _divisionIntoPartsEffect.AddForceGravicyParts();
+            _divisionIntoPartsEffect.DestroyTarget();
             Destroy(gameObject);
         }
     }

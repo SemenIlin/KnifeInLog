@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class DivisionIntoPartsEffect : MonoBehaviour
+public class DivisionIntoPartsEffect : MonoBehaviour, IDestroy
 {
     [SerializeField] private GameObject[] _parts;
     [SerializeField] private Vector2 _force;
@@ -9,7 +9,14 @@ public class DivisionIntoPartsEffect : MonoBehaviour
         _force.x = _force.x >= _force.y ? _force.y : _force.x;
         _force.y = _force.y >= _force.x ? _force.y : _force.x;
     }
-    public void AddForceGravicyParts()
+   
+    public void DestroyTarget()
+    {
+        GetNewParent();
+        EnableSpriteRendererForParts(); 
+        AddForceGravicyParts();
+    }
+    private void AddForceGravicyParts()
     {
         foreach (var part in _parts)
         {
@@ -18,27 +25,18 @@ public class DivisionIntoPartsEffect : MonoBehaviour
             tempPart.gravityScale = 4;
         }
     }
-    public void GetNewParent()
+    private void GetNewParent()
     {
         foreach (var part in _parts)
         {
             part.GetComponent<Transform>().parent = null;
         }
     }
-    public void EnableSpriteRendererForParts()
+    private void EnableSpriteRendererForParts()
     {
         foreach (var part in _parts)
         {
             part.GetComponent<SpriteRenderer>().enabled = true;
-        }
-    }
-    public void DisableParts()
-    {
-        foreach (var part in _parts)
-        {
-            var tempPart = part.GetComponent<Rigidbody2D>();
-            tempPart.gravityScale = 0;
-            part.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

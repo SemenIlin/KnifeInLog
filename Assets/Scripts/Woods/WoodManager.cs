@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class WoodManager : MonoBehaviour
 {
     private Settings _settings;
-    private DivisionIntoPartsEffect _divisionIntoPartsEffect;
+    private IDestroy _divisionIntoPartsEffect;
     private WoodModel _woodModel;
     private GameObject _wood;
     private Transform _woodTransform;
@@ -83,12 +84,13 @@ public class WoodManager : MonoBehaviour
     {
         IsCreatedWood = true;
         TextController.Instance.ShowLevel();
+
         _settings = LevelController.Instance.GetLevel(GameManager.Level);
         _woodModel = _settings.Get(transform);
         _wood = _woodModel.gameObject;
-        _divisionIntoPartsEffect = _wood.GetComponent<DivisionIntoPartsEffect>();
 
-        _divisionIntoPartsEffect.DisableParts();
+        _divisionIntoPartsEffect = _woodModel.DestroyEffect;
+
         _woodTransform = _wood.transform;
         _currentSpeed = _newSpeed = _woodModel.Speed;
 
@@ -110,9 +112,7 @@ public class WoodManager : MonoBehaviour
         Knifes.Instance.AddGravity();
         Knifes.Instance.DeleteAllKnife();
 
-        _divisionIntoPartsEffect.GetNewParent();
-        _divisionIntoPartsEffect.EnableSpriteRendererForParts();
-        _divisionIntoPartsEffect.AddForceGravicyParts();
+        _divisionIntoPartsEffect.DestroyTarget();
 
         Destroy(_wood.gameObject);
     }

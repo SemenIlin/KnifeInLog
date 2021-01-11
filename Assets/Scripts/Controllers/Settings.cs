@@ -5,8 +5,9 @@ using UnityEngine;
 public class Settings : ScriptableObject
 {
     private WoodModel wood;
+    private IDestroy destroy;
 
-    [Serializable]
+     [Serializable]
     class WoodConfig
     {
         public WoodModel Prefab;
@@ -36,11 +37,13 @@ public class Settings : ScriptableObject
     public WoodModel Get(Transform parrentTransform)
     {
         wood = Instantiate(_woodConfig.Prefab, parrentTransform);
+        IDestroy destroy = wood.GetComponent<IDestroy>();
 
         wood.Initialize(_woodConfig.Speed,
                         _woodConfig.Firmness,
                         _woodConfig.ChangeCreateApple,
-                        _woodConfig.TimerForChangeDirection);
+                        _woodConfig.TimerForChangeDirection,
+                        destroy);
 
         return wood;
     }
@@ -56,6 +59,7 @@ public class Settings : ScriptableObject
         wood.Initialize(_woodConfig.Speed,
                         _woodConfig.Firmness,
                         _woodConfig.ChangeCreateApple,
-                        _woodConfig.TimerForChangeDirection);
+                        _woodConfig.TimerForChangeDirection,
+                        destroy);
     }
 }

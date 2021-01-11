@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5a16665113e5e74f96a27f3fc3fd517, type: 3}
-  m_Name: WoodLevel4
+  m_Name: CheeseBoos
   m_EditorClassIdentifier: 
   _woodConfig:
-    Prefab: {fileID: 4740017149512889977, guid: e654c3372adee724a8dbf84f37d059cf, type: 3}
-    Speed: -4.5
-    Firmness: 10
+    Prefab: {fileID: 1577122382561231007, guid: 4662766d2e6824c439d22104e0570ed2, type: 3}
+    Speed: 0.9
+    Firmness: 3
     ChangeCreateApple: 25
-    TimerForChangeDirection: 6.6
-    TimeForStopWood: 1.8
-    TimerForCreateKnife: 0.2
+    TimerForChangeDirection: 5
+    TimeForStopWood: 2
+    TimerForCreateKnife: 1
