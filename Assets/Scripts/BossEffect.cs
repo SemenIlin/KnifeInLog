@@ -2,7 +2,7 @@
 
 public class BossEffect : MonoBehaviour
 {
-
+    [SerializeField]
     private float _lifeTime = 2.5f;
     private bool _isLife = false;
 

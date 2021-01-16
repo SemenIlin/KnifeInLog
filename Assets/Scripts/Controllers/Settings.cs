@@ -5,7 +5,6 @@ using UnityEngine;
 public class Settings : ScriptableObject
 {
     private WoodModel wood;
-    private IDestroy destroy;
 
      [Serializable]
     class WoodConfig
@@ -48,18 +47,17 @@ public class Settings : ScriptableObject
         return wood;
     }
 
-    public float ChangeCreateApple { get { return _woodConfig.ChangeCreateApple; } }
-    public float GetTimeForStopWood { get { return _woodConfig.TimeForStopWood; } }
-    public int GetFirmness { get { return _woodConfig.Firmness; } }
+    public float ChangeCreateApple =>_woodConfig.ChangeCreateApple; 
+    public float GetTimeForStopWood => _woodConfig.TimeForStopWood;
+    public int GetFirmness => _woodConfig.Firmness;
     
-    public float TimerForCreateKnife { get { return _woodConfig.TimerForCreateKnife; } }
+    public float TimerForCreateKnife => _woodConfig.TimerForCreateKnife;
 
     public void UpdateValues()
     {
         wood.Initialize(_woodConfig.Speed,
                         _woodConfig.Firmness,
                         _woodConfig.ChangeCreateApple,
-                        _woodConfig.TimerForChangeDirection,
-                        destroy);
+                        _woodConfig.TimerForChangeDirection);
     }
 }

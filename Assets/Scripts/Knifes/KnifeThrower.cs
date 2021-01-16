@@ -23,13 +23,13 @@ public class KnifeThrower : MonoBehaviour
     {
         ButtonManager.Instance.CreateEnviromentLevel += CreateKnife;
         WoodManager.CreateKnife += CreateKnife;
-        _settings = LevelController.Instance.GetLevel(GameManager.Level);
+        _settings = LevelController.Instance.GetLevel(GameValues.Instance.Level);
         _timer = _settings.TimerForCreateKnife;
     }
 
     private void Update()
     {
-        if (GameManager.IsGame)
+        if (GameValues.Instance.IsGame)
         {
             _timer += Time.deltaTime;
 

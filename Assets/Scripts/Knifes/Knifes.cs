@@ -16,11 +16,16 @@ public class Knifes : MonoBehaviour
         _knifesInWood = new List<Knife>();
     }
 
-    public int CountKnifesInWood { get { return _knifesInWood.Count; } }
+    public int CountKnifesInWood => _knifesInWood.Count;
 
-    public void AddKnife(Knife knife) => _knifesInWood.Add(knife);   
-
-    public void DeleteAllKnife() => _knifesInWood.Clear();
+    public void AddKnife(Knife knife)
+    {
+        _knifesInWood.Add(knife);
+    }
+    public void DeleteAllKnife()
+    {
+        _knifesInWood.Clear();
+    }
 
     public void GetNewParent()
     {

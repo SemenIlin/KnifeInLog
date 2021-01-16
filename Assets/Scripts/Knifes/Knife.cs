@@ -12,6 +12,8 @@ public class Knife : MonoBehaviour
 
     private CircleCollider2D _woodCollider2D;
 
+    private GameValues _gameValues;
+
     public bool IsKnifeInWood { get; private set; }
     public BoxCollider2D BoxCollider { get; private set; }
     public Rigidbody2D RigidbodyKnife { get; private set; }
@@ -24,6 +26,8 @@ public class Knife : MonoBehaviour
     
     private void OnEnable()
     {
+        _gameValues = GameValues.Instance;
+
         RigidbodyKnife = GetComponent<Rigidbody2D>();
         BoxCollider = GetComponent<BoxCollider2D>();
         Transform = GetComponent<Transform>();
@@ -53,10 +57,8 @@ public class Knife : MonoBehaviour
             // Change position wood, light effect, fail parts.
             HitOnWood?.Invoke();
 
-            ++GameManager.Score;
-            GameManager.MaxScore = GameManager.MaxScore > GameManager.Score ?
-                GameManager.MaxScore : 
-                GameManager.Score;
+            _gameValues.IncrementOfScore();
+            _gameValues.SetMaxScore(_gameValues.Score);
 
             SaveManager.Instance.SaveGame();
             TextController.Instance.ShowScore();
@@ -85,15 +87,15 @@ public class Knife : MonoBehaviour
         {
             Vibration.VibratePeek();
             SoundEffects.Instance.ShootKnife();
-            GameManager.IsGame = false;
+            _gameValues.SetStatusGame(false);
             _isFail = true;
 
             // Rotate and fail knife after lose shoot.
             RigidbodyKnife.velocity = Vector2.down;
             RigidbodyKnife.gravityScale = 3;
 
-            GameManager.Score = 0;
-            GameManager.Level = 0;
+            _gameValues.ResetLevelValue();
+            _gameValues.ResetValueScore();
 
             StartCoroutine(ShowResultWindow());
         }
@@ -109,6 +111,6 @@ public class Knife : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         HideWood?.Invoke();
-        ButtonManager.Instance.ShowWindow(3); 
+       ButtonManager.Instance.ShowWindow((int)WindowType.Restart); 
     }
 }

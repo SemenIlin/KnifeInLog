@@ -29,7 +29,7 @@ public class Apple : MonoBehaviour
     {
         if(collision.gameObject.tag == "Knife")
         {
-            ++GameManager.QuantityApple;
+            GameValues.Instance.IncrementQuantityOfApple();
             SaveManager.Instance.SaveGame();
             TextController.Instance.ShowQuantityApple();
             SoundEffects.Instance.AppleCut();

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class ButtonManager : MonoBehaviour
 {
     [SerializeField] private WindowsController _windowsController;
+	
     public static ButtonManager Instance;
 
     public event Action CreateEnviromentLevel;
@@ -15,26 +16,32 @@ public class ButtonManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
-    public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    public void Restart() 
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
-    public void ShowWindow(int numderWindow)
+    public void ShowWindow(int windowType)
     {
         foreach (var window in _windowsController.Windows)
         {
-            window.gameObject.SetActive(window.NumberWindow == numderWindow);
+            window.gameObject.SetActive(window.WindowType == (WindowType)windowType);
         }
     }
 
-    public void CreateKnife() => KnifeThrower.IsCreateKnife = true;
+    public void CreateKnife()
+    {
+        KnifeThrower.IsCreateKnife = true;
+    }
     public void StartGame()
     {
-        GameManager.IsGame = true;
+        GameValues.Instance.SetStatusGame(true);
         CreateEnviromentLevel?.Invoke();
     }
 
     public void RestartGame()
     {
-        GameManager.IsGame = true;
+        GameValues.Instance.SetStatusGame(true);
         DestroyWood?.Invoke();
         ShoowWood?.Invoke();
         CreateEnviromentLevel?.Invoke();

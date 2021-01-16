@@ -12,7 +12,7 @@ public class WindowsController : MonoBehaviour
         TextController.Instance.ShowQuantityApple();
 
         foreach (var window in _windows)
-            window.gameObject.SetActive(window.NumberWindow == 1);
+            window.gameObject.SetActive(window.WindowType == WindowType.Menu);
     }
 
     public List<Window> Windows => _windows;

@@ -2,13 +2,13 @@
 
 public class Rotator : MonoBehaviour
 {
+    [SerializeField]
+    [Range(-20f, 20f)]
     private float _rotateX;
+
+    [SerializeField]
+    [Range(-20f, 20f)]
     private float _rotateY;
-    private void Start()
-    {
-        _rotateX = Random.Range(-20f, 20f);
-        _rotateY = Random.Range(-20f, 20f);
-    }
     private void FixedUpdate()
     {
         transform.Rotate(_rotateX, _rotateY, 0);

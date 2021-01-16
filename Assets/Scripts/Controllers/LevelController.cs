@@ -18,5 +18,9 @@ public class LevelController : MonoBehaviour
     /// </summary>
     /// <param name="level">Level min value 0</param>
     /// <returns></returns>
-    public Settings GetLevel(int level) =>  _levels[level % _levels.Count];
+    public Settings GetLevel(int level) 
+    {
+        return _levels[level % _levels.Count];
+    }
 }
+

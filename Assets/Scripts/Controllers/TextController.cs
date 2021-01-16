@@ -13,6 +13,8 @@ public class TextController : MonoBehaviour
     [SerializeField] private Text _scoreMenuWindow;
     [SerializeField] private Text _levelMenuWindow;
 
+    private GameValues _gameValues;
+
     public static TextController Instance;
     private void Awake()
     {
@@ -22,34 +24,35 @@ public class TextController : MonoBehaviour
 
     private void Start()
     {
+        _gameValues = GameValues.Instance;
         WoodManager.UpdateCanvas += ShowScore;
         WoodManager.UpdateCanvas += ShowQuantityApple;
     }
     public void ShowQuantityApple()
     {
-        _quantityAppleGameWindow.text = GameManager.QuantityApple.ToString();
-        _quantityAppleResultWindow.text = GameManager.QuantityApple.ToString();
-        _quantityAppleMenuWindow.text = GameManager.QuantityApple.ToString();
+        _quantityAppleGameWindow.text = _gameValues.QuantityApple.ToString();
+        _quantityAppleResultWindow.text = _gameValues.QuantityApple.ToString();
+        _quantityAppleMenuWindow.text = _gameValues.QuantityApple.ToString();
     }
 
     public void ShowScore()
     {
-        _scoreGameWindow.text = GameManager.Score.ToString();
-        _scoreResultWindow.text = GameManager.Score.ToString();
+        _scoreGameWindow.text = _gameValues.Score.ToString();
+        _scoreResultWindow.text = _gameValues.Score.ToString();
     }
 
     public void ShowLevel()
     {
-        _levelGameWindow.text = (GameManager.Level + 1).ToString();
+        _levelGameWindow.text = (_gameValues.Level + 1).ToString();
     }
 
     public void ShowMaxScore()
     {
-        _scoreMenuWindow.text = GameManager.MaxScore.ToString();
+        _scoreMenuWindow.text = _gameValues.MaxScore.ToString();
     }
 
     public void ShowMaxLevel() 
     {
-        _levelMenuWindow.text = (GameManager.MaxLevel + 1).ToString();
+        _levelMenuWindow.text = (_gameValues.MaxLevel + 1).ToString();
     }
 }

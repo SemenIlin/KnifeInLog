@@ -22,11 +22,23 @@ public class SoundEffects : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public void ShootWood() => _audioSource.PlayOneShot(_knifeToWood);
+    public void ShootWood()
+    { 
+        _audioSource.PlayOneShot(_knifeToWood);
+    }
 
-    public void ShootKnife() => _audioSource.PlayOneShot(_knifeToKnife);
+    public void ShootKnife()
+    {
+        _audioSource.PlayOneShot(_knifeToKnife); 
+    }
 
-    public void WoodCrackling() => _audioSource.PlayOneShot(_woodCrackling);
+    public void WoodCrackling()
+    {
+        _audioSource.PlayOneShot(_woodCrackling);
+    }
 
-    public void AppleCut() => _audioSource.PlayOneShot(_appleCut);
+    public void AppleCut()
+    {
+        _audioSource.PlayOneShot(_appleCut);
+    }
 }

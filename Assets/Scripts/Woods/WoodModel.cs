@@ -12,7 +12,7 @@ public class WoodModel : MonoBehaviour
     public int Firmness { get; private set; }
     public float ChangeCreateApple { get; private set; }
     public float TimerForChangeDirection{ get; private set; }
-    public void Initialize(float speed, int firmness, float changeCreateApple, float timerForChangeDirection, IDestroy destroy)
+    public void Initialize(float speed, int firmness, float changeCreateApple, float timerForChangeDirection, IDestroy destroy = null)
     {
         Speed = speed;
         Firmness = firmness;

@@ -14,6 +14,12 @@ public class KnifeIcon : MonoBehaviour
         _defaultSprite = _image.sprite;
     }
 
-    public void SetDefaultSprite() => _image.sprite = _defaultSprite;
-    public void ChangeIconKnife() => _image.sprite = _usedKnifeSprite;
+    public void SetDefaultSprite() 
+    { 
+        _image.sprite = _defaultSprite;
+    }
+    public void ChangeIconKnife()
+    { 
+        _image.sprite = _usedKnifeSprite; 
+    }
 }

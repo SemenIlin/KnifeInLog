@@ -2,7 +2,7 @@
 
 public class Window : MonoBehaviour
 {
-    [SerializeField] private int _numberWindow;
+    [SerializeField] private WindowType _windowType;
 
-    public int NumberWindow => _numberWindow;
+    public WindowType WindowType => _windowType;
 }

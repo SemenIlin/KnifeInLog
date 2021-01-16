@@ -31,7 +31,7 @@ public class KnifeIconController : MonoBehaviour
     }
     private void Init()
     {
-        _settings = LevelController.Instance.GetLevel(GameManager.Level);
+        _settings = LevelController.Instance.GetLevel(GameValues.Instance.Level);
         for (var i = 0; i < _settings.GetFirmness; ++i)
         {
             var knifeIcon = Instantiate(_knifeIconPrefab, this.transform, false);

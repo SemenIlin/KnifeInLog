@@ -10,6 +10,8 @@ public class WoodManager : MonoBehaviour
     private GameObject _wood;
     private Transform _woodTransform;
 
+    private GameValues _gameValues;
+
     private float _time;
     private float _iterator;
 
@@ -33,6 +35,7 @@ public class WoodManager : MonoBehaviour
     public static event Action UpdateCanvas;
     private void Start()
     {
+        _gameValues = GameValues.Instance;
         ButtonManager.Instance.CreateEnviromentLevel += InitWood;
         ButtonManager.Instance.DestroyWood += DestroyWood;
     }
@@ -50,7 +53,7 @@ public class WoodManager : MonoBehaviour
         }
 
         if (_woodModel.Firmness <= Knifes.Instance.CountKnifesInWood &&
-            GameManager.IsGame)
+            _gameValues.IsGame)
             ChangeWood();
 
      }
@@ -59,7 +62,7 @@ public class WoodManager : MonoBehaviour
         if (_woodTransform == null)
             return;
 
-        if(GameManager.IsGame)
+        if(_gameValues.IsGame)
             _woodTransform.Rotate(0f, 0f, _currentSpeed);
     }
 
@@ -85,7 +88,7 @@ public class WoodManager : MonoBehaviour
         IsCreatedWood = true;
         TextController.Instance.ShowLevel();
 
-        _settings = LevelController.Instance.GetLevel(GameManager.Level);
+        _settings = LevelController.Instance.GetLevel(_gameValues.Level);
         _woodModel = _settings.Get(transform);
         _wood = _woodModel.gameObject;
 
@@ -100,10 +103,9 @@ public class WoodManager : MonoBehaviour
     {
         KnifeThrower.IsStartToknifeThrower = false;
         IsCreatedWood = false;
-           ++GameManager.Level;
-        GameManager.MaxLevel = GameManager.MaxLevel > GameManager.Level ?
-            GameManager.MaxLevel :
-            GameManager.Level;
+        _gameValues.IncrementOfLevel();
+        _gameValues.SetMaxLevel(_gameValues.Level);
+
         SoundEffects.Instance.WoodCrackling();
 
         FailApple?.Invoke();

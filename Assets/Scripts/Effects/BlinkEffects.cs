@@ -33,8 +33,14 @@ public class BlinkEffects : MonoBehaviour
         ResetMaterial();
         ResetPosition();
     }
-    public void ResetMaterial() => _spriteRenderer.material = _woodMaterial;
-    public void ResetPosition() => transform.position = _oldPosition;
+    public void ResetMaterial()
+    { 
+        _spriteRenderer.material = _woodMaterial; 
+    }
+    public void ResetPosition()
+    {
+        transform.position = _oldPosition;
+    }
 
     private void OnDestroy()
     {
